@@ -1,0 +1,38 @@
+name: Build IPA
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Build app (unsigned)
+        run: |
+          xcodebuild archive \
+            -project PairDemo.xcodeproj \
+            -scheme PairDemo \
+            -sdk iphoneos \
+            -configuration Release \
+            -archivePath build/PairDemo.xcarchive \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Package IPA
+        run: |
+          mkdir -p Payload
+          cp -r build/PairDemo.xcarchive/Products/Applications/PairDemo.app Payload/
+          zip -r PairDemo.ipa Payload
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PairDemo-ipa
+          path: PairDemo.ipa
