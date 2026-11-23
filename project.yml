@@ -1,0 +1,24 @@
+name: PairDemo
+options:
+  bundleIdPrefix: com.example
+targets:
+  PairDemo:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources: [PairDemo]
+    info:
+      path: PairDemo/Info.plist
+      properties:
+        CFBundleDisplayName: PairDemo
+        CFBundleShortVersionString: "1.0"
+        CFBundleVersion: "1"
+        UILaunchScreen: {}
+        NSLocalNetworkUsageDescription: Нужно, чтобы найти соседнее устройство в Wi-Fi.
+        NSBonjourServices:
+          - _pairdemo._tcp
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.pairdemo
+        CODE_SIGNING_ALLOWED: NO
+        CODE_SIGNING_REQUIRED: NO
